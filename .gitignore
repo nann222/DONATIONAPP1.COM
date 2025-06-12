@@ -3838,9 +3838,12 @@ node_modules/
 **/.cache/
 
 
+# Cache directories
+**/.cache/
+**/node_modules/.cache/
+
 # Local Netlify folder
 .netlify
 
 node_modules/
 *.cache/
-**/.cache/
