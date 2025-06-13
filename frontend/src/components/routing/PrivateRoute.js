@@ -1,44 +1,42 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CircularProgress, Container } from '@mui/material';
 
 const PrivateRoute = ({
-  component: Component,
-  auth: { isAuthenticated, loading, user }, // Add user here
-  allowedRoles, // New prop for role-based access
-  ...rest
-}) => (
-  <Route
-    {...rest}
-    render={(props) => {
-      if (loading) {
-        return (
-          <Container sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-            <CircularProgress />
-          </Container>
-        );
-      }
-      if (!isAuthenticated) {
-        return <Redirect to="/" />;
-      }
-      // Check for role-based access if allowedRoles is provided
-      if (allowedRoles && user && !allowedRoles.includes(user.role)) {
-        // Redirect to a 'not authorized' page or home/dashboard
-        // For simplicity, redirecting to home/dashboard based on role
-        const homePath = user.role ? `/${user.role}/dashboard` : '/';
-        return <Redirect to={homePath} />;
-      }
-      return <Component {...props} />;
-    }}
-  />
-);
+  children,
+  auth: { isAuthenticated, loading, user },
+  allowedRoles,
+}) => {
+  const location = useLocation();
+
+  if (loading) {
+    return (
+      <Container sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" state={{ from: location }} replace />;
+  }
+
+  // Check for role-based access if allowedRoles is provided
+  if (allowedRoles && user && !allowedRoles.includes(user.role)) {
+    // Redirect to a 'not authorized' page or home/dashboard
+    const homePath = user.role ? `/${user.role}/dashboard` : '/';
+    return <Navigate to={homePath} state={{ from: location }} replace />;
+  }
+
+  return children;
+};
 
 PrivateRoute.propTypes = {
-  component: PropTypes.elementType.isRequired,
+  children: PropTypes.node.isRequired,
   auth: PropTypes.object.isRequired,
-  allowedRoles: PropTypes.arrayOf(PropTypes.string) // Optional: for role-based access
+  allowedRoles: PropTypes.arrayOf(PropTypes.string)
 };
 
 const mapStateToProps = (state) => ({

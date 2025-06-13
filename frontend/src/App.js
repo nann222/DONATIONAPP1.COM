@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -24,7 +24,7 @@ import RequestForm from './components/requests/RequestForm';
 import DonationTracking from './components/tracking/DonationTracking';
 import FeedbackForm from './components/feedback/FeedbackForm';
 import LogisticsManagement from './components/logistics/LogisticsManagement';
-import NotificationManagement from './components/notifications/NotificationManagement'; // Add this import
+import NotificationManagement from './components/notifications/NotificationManagement';
 
 // Create theme
 const theme = createTheme({
@@ -56,21 +56,98 @@ function App() {
           <div className="App">
             <Navbar />
             <Alert />
-            <Switch>
-              <Route exact path="/" component={Login} />
-              <Route exact path="/register" component={Register} />
-              <PrivateRoute exact path="/admin/dashboard" component={AdminDashboard} allowedRoles={['admin']} />
-              <PrivateRoute exact path="/donor/dashboard" component={DonorDashboard} allowedRoles={['donor']} />
-              <PrivateRoute exact path="/recipient/dashboard" component={RecipientDashboard} allowedRoles={['recipient']} />
-              <PrivateRoute exact path="/analytics" component={Analytics} allowedRoles={['admin']} />
-              <PrivateRoute exact path="/donation/new" component={DonationForm} allowedRoles={['donor']} />
-              <PrivateRoute exact path="/request/new" component={RequestForm} allowedRoles={['recipient']} />
-              <PrivateRoute exact path="/tracking/:id" component={DonationTracking} />
-              <PrivateRoute exact path="/feedback" component={FeedbackForm} />
-              <PrivateRoute exact path="/logistics" component={LogisticsManagement} allowedRoles={['admin']} />
-              <PrivateRoute exact path="/admin/logistics" component={LogisticsManagement} allowedRoles={['admin']} />
-              <PrivateRoute exact path="/notifications" component={NotificationManagement} allowedRoles={['admin', 'donor', 'recipient']} /> {/* Add this route */}
-            </Switch>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <PrivateRoute allowedRoles={['admin']}>
+                    <AdminDashboard />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/donor/dashboard"
+                element={
+                  <PrivateRoute allowedRoles={['donor']}>
+                    <DonorDashboard />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/recipient/dashboard"
+                element={
+                  <PrivateRoute allowedRoles={['recipient']}>
+                    <RecipientDashboard />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/analytics"
+                element={
+                  <PrivateRoute allowedRoles={['admin']}>
+                    <Analytics />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/donation/new"
+                element={
+                  <PrivateRoute allowedRoles={['donor']}>
+                    <DonationForm />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/request/new"
+                element={
+                  <PrivateRoute allowedRoles={['recipient']}>
+                    <RequestForm />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/tracking/:id"
+                element={
+                  <PrivateRoute>
+                    <DonationTracking />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/feedback"
+                element={
+                  <PrivateRoute>
+                    <FeedbackForm />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/logistics"
+                element={
+                  <PrivateRoute allowedRoles={['admin']}>
+                    <LogisticsManagement />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/admin/logistics"
+                element={
+                  <PrivateRoute allowedRoles={['admin']}>
+                    <LogisticsManagement />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/notifications"
+                element={
+                  <PrivateRoute allowedRoles={['admin', 'donor', 'recipient']}>
+                    <NotificationManagement />
+                  </PrivateRoute>
+                }
+              />
+            </Routes>
             <Footer />
           </div>
         </BrowserRouter>

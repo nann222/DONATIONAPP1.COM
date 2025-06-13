@@ -1,0 +1,31 @@
+functionsDirectory = "C:\\my project\\Donation-App-master1\\frontend\\netlify\\functions"
+functionsDirectoryOrigin = "config"
+plugins = []
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "C:\\my project\\Donation-App-master1\\frontend\\build"
+publishOrigin = "config"
+commandOrigin = "config"
+base = "C:\\my project\\Donation-App-master1\\frontend"
+command = "npm run build"
+functions = "C:\\my project\\Donation-App-master1\\frontend\\netlify\\functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]

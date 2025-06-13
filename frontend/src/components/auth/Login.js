@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
@@ -32,11 +32,11 @@ const Login = ({ login, isAuthenticated, userRole }) => {
   // Redirect if logged in
   if (isAuthenticated) {
     if (userRole === 'admin') {
-      return <Redirect to="/admin/dashboard" />;
+      return <Navigate to="/admin/dashboard" replace />;
     } else if (userRole === 'donor') {
-      return <Redirect to="/donor/dashboard" />;
+      return <Navigate to="/donor/dashboard" replace />;
     } else if (userRole === 'recipient') {
-      return <Redirect to="/recipient/dashboard" />;
+      return <Navigate to="/recipient/dashboard" replace />;
     }
   }
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
@@ -58,13 +58,13 @@ const Register = ({ setAlert, register, isAuthenticated, user }) => {
   if (isAuthenticated && user) {
     // Redirect based on user's actual role after registration
     if (user.role === 'admin') {
-      return <Redirect to="/admin/dashboard" />;
+      return <Navigate to="/admin/dashboard" replace />;
     } else if (user.role === 'donor') {
-      return <Redirect to="/donor/dashboard" />;
+      return <Navigate to="/donor/dashboard" replace />;
     } else if (user.role === 'recipient') {
-      return <Redirect to="/recipient/dashboard" />;
+      return <Navigate to="/recipient/dashboard" replace />;
     }
-    return <Redirect to="/login" />;
+    return <Navigate to="/login" replace />;
   }
 
   return (
